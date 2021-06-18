@@ -16,7 +16,7 @@ var config=require('./config');
     var parsedUrl=url.parse(req.url, true);
     //Get The Path
     var path=parsedUrl.pathname;
-    var trimmedpath=path.replace(/^\/+|\/+$/g,'');
+    var trimmedPath=path.replace(/^\/+|\/+$/g,'');
     //Get the query string
     var queryStringObject=parsedUrl.query;
 
@@ -29,11 +29,14 @@ var config=require('./config');
     req.on('data', function(data){
         buffer += decoder.write(data);
     });
-    req.on('end', function(){
+ /**   req.on('end', function(){
         buffer += decoder.end();
         res.end('Hello World\n');
         //Log The Request Path
       //Choose the handler this request should go to
+        });
+**/
+  
         var choosenHandler = typeof(router[trimmedPath])!== 'undefined' ? router[trimmedPath]:handlers.notFound;
 
         var data= {
@@ -57,13 +60,8 @@ var config=require('./config');
             res.setHeader('Content-Type','application/json');
             res.writeHead(statusCode);
             res.end(payloadString);
-
-        });
-
-    });
-
-
-    });
+  });
+});
     //Send The Response
    // console.log("Request Recieved With This Header" + headers);
    
@@ -73,12 +71,23 @@ server.listen(config.port,function(){
     console.log("The Server Is Listening On Port "+config.port+" in "+config.envName+" now");
 });
 var handlers={};
+handlers.hello = function(data, callback){
+	//CallBack a http status code, and a payload object
+	callback(200,{'name':'Welcome'});
+};
 
 //Sample Handler
-handlers.sample = function(data, callback){
+/**handlers.sample = function(data, callback){
 	//CallBack a http status code, and a payload object
 	callback(406,{'name':'sample handler'});
 };
+**/
+
+/**handlers.ping = function(data, callback){
+	callback(200);
+};
+**/
+
 
 //Not Found Handler
 handlers.notFound = function(data, callback){
@@ -87,7 +96,9 @@ handlers.notFound = function(data, callback){
 
 //Define a request router
 var router={
-	sample:handlers.sample
+    //ping:handlers.ping
+	//sample:handlers.sample
+    hello:handlers.hello
 }
  
 
