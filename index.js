@@ -8,7 +8,19 @@
 const http=require('http');
 const url=require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
+var fs = require('fs');
 var config=require('./config');
+var _data = require('./lib/data')
+
+//Testing
+/**_data.create('test','newFile',{'foo':'bar'},function(err){
+
+	console.log('this was the error', err);
+});
+**/
+_data.read('test','newFile1',function(err, data){
+	console.log('this was the error', err,'this was the data', data);
+});
 
 //The server should respond to all request in a string
  var server= http.createServer(function(req, res){
