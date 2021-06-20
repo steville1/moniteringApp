@@ -8,7 +8,7 @@ var environments = {
 //Staging default environments
 
 environments.staging ={
-	'port' : 2003,
+	'port' : 2004,
 	'envName' : 'staging'
 
 };
